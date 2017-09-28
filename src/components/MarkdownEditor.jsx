@@ -7,7 +7,7 @@ class MarkdownEditor extends Component {
     super(props)
 
     this.state = {
-      text: ''
+      text: '```js\n console.log("hello"); \n```'
     }
   }
 

@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import marked from 'marked';
-import highlightJs from 'highlight.js'
+import hljs from 'highlight.js'
 
 class Markdown extends Component {
-  constructor(props) {
-    super(props)
-
-
+  componentWillMount() {
     marked.setOptions({
       highlight: function(code) {
-        return highlightJs.highlightAuto(code).value
+        return hljs.highlightAuto(code).value
       }
     })
+  }
+
+  componentDidMount() {
+    hljs.initHighlightingOnLoad()
   }
 
   render() {
