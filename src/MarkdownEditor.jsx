@@ -1,45 +1,68 @@
-import React, { PropTypes } from 'react';
+import React, { Component } from 'react';
 import marked from 'marked';
+import PropTypes from 'prop-types';
+import highlightJs from 'highlight.js'
 
-const Markdown = React.createClass({
-  propTypes: {
-    text: React.PropTypes.string
-  },
-  getDefaultProps() {
-    return { text: '' };
-  },
+class Markdown extends Component {
+  constructor(props) {
+    super(props)
+
+
+    marked.setOptions({
+      highlight: function(code) {
+        return highlightJs.highlightAuto(code).value
+      }
+    })
+  }
+
   render() {
     return (
       <div dangerouslySetInnerHTML={{
         __html: marked(this.props.text)
       }}></div>
-    );
+    )
   }
-});
+}
 
-const Editor = React.createClass({
-  propTypes: {
-    onEdit: React.PropTypes.func.isRequired
-  },
+Markdown.propTypes = {
+  text: PropTypes.string
+}
+
+Markdown.defaultProps = {
+  text: ''
+}
+
+class Editor extends Component {
   handleEdit({target}) {
     const val = target.value;
     this.props.onEdit(val);
-  },
+  }
+
   render() {
     return (
       <textarea onInput={this.handleEdit}>
       </textarea>
-    );
+    )
   }
-});
+}
 
-const MarkdownEditor = React.createClass({
-  getInitialState() {
-    return { text: '' };
-  },
-  onEdit(text) {
-    this.setState({ text });
-  },
+Editor.PropTypes = {
+  onEdit: PropTypes.func.isRequired
+}
+
+class MarkdownEditor extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      text: ''
+    }
+  }
+
+  onEdit = (text) => {
+    this.setState({ text })
+  }
+
   render() {
     return (
       <main>
@@ -54,8 +77,8 @@ const MarkdownEditor = React.createClass({
           <Markdown text={this.state.text} />
         </section>
       </main>
-    );
+    )
   }
-});
+}
 
 export default MarkdownEditor
